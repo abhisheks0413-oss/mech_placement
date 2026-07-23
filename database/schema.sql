@@ -1,0 +1,62 @@
+﻿CREATE DATABASE IF NOT EXISTS cet_mech_placement;
+USE cet_mech_placement;
+
+CREATE TABLE IF NOT EXISTS admins (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(120) NOT NULL UNIQUE,
+  passwordHash VARCHAR(255) NOT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS opportunities (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  type ENUM('Internship', 'Placement') NOT NULL,
+  status ENUM('Applications Open', 'Applications Closed') NOT NULL DEFAULT 'Applications Open',
+  company VARCHAR(180) NOT NULL,
+  description TEXT NOT NULL,
+  applicationLink VARCHAR(500) NOT NULL,
+  applicationLinks JSON NULL,
+  deadline DATETIME NOT NULL,
+  compensation JSON NULL,
+  documents JSON NULL,
+  logo VARCHAR(500) NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS placement_statistics (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  company VARCHAR(180) NOT NULL,
+  package DECIMAL(6,2) NULL,
+  placementMode ENUM('On Campus', 'Off Campus') NOT NULL DEFAULT 'On Campus',
+  years JSON NOT NULL,
+  notes TEXT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS alumni_insights (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(180) NOT NULL,
+  company VARCHAR(180) NOT NULL,
+  passoutYear INT NOT NULL,
+  position VARCHAR(180) NOT NULL,
+  placementMode ENUM('On Campus', 'Off Campus') NOT NULL DEFAULT 'On Campus',
+  ctc DECIMAL(6,2) NULL,
+  review TEXT NOT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS opportunity_updates (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  opportunityId INT NOT NULL,
+  message TEXT NOT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_opportunity_updates_opportunity
+    FOREIGN KEY (opportunityId) REFERENCES opportunities(id)
+    ON DELETE CASCADE
+);
+
+
+
