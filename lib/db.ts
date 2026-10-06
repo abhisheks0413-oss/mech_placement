@@ -4,18 +4,51 @@ const globalForMysql = globalThis as unknown as {
   mysqlPool?: mysql.Pool;
 };
 
-export const pool =
-  globalForMysql.mysqlPool ??
-  mysql.createPool({
-    host: process.env.DB_HOST || "localhost",
-    port: Number(process.env.DB_PORT || 3306),
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "cet_mech_placement",
+export const pool = globalForMysql.mysqlPool ?? (function() {
+  let dbConfig: mysql.PoolOptions = {
     waitForConnections: true,
-    connectionLimit: 10,
-    namedPlaceholders: true
-  });
+    connectionLimit: Number(process.env.DB_CONNECTION_LIMIT || (process.env.VERCEL ? 5 : 10)),
+    namedPlaceholders: true,
+  };
+
+  const isProduction = process.env.NODE_ENV === "production" || !!process.env.VERCEL;
+  const rejectUnauthorized = process.env.DB_SSL_REJECT_UNAUTHORIZED !== "false";
+  const sslConfig = isProduction ? {
+    rejectUnauthorized,
+    ca: process.env.DB_SSL_CA ? process.env.DB_SSL_CA.replace(/\\n/g, '\n') : undefined,
+  } : undefined;
+
+  if (process.env.DATABASE_URL) {
+    try {
+      const url = new URL(process.env.DATABASE_URL);
+      const isSslRequired = url.searchParams.get("ssl-mode") === "REQUIRED" || isProduction;
+      
+      dbConfig = {
+        ...dbConfig,
+        host: url.hostname,
+        port: Number(url.port) || 3306,
+        user: url.username,
+        password: decodeURIComponent(url.password),
+        database: url.pathname.slice(1),
+        ssl: isSslRequired ? sslConfig : undefined
+      };
+    } catch (err) {
+      console.error("Invalid DATABASE_URL configuration", err);
+    }
+  } else {
+    dbConfig = {
+      ...dbConfig,
+      host: process.env.DB_HOST || "localhost",
+      port: Number(process.env.DB_PORT || 3306),
+      user: process.env.DB_USER || "root",
+      password: process.env.DB_PASSWORD || "",
+      database: process.env.DB_NAME || "cet_mech_placement",
+      ssl: sslConfig
+    };
+  }
+
+  return mysql.createPool(dbConfig);
+})();
 
 if (process.env.NODE_ENV !== "production") {
   globalForMysql.mysqlPool = pool;
