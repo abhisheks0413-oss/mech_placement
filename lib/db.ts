@@ -12,15 +12,21 @@ export const pool = globalForMysql.mysqlPool ?? (function() {
   };
 
   const isProduction = process.env.NODE_ENV === "production" || !!process.env.VERCEL;
-  const rejectUnauthorized = process.env.DB_SSL_REJECT_UNAUTHORIZED !== "false";
+  
+  // Clean up env vars in case Vercel strings them with quotes
+  const rejectAuthRaw = (process.env.DB_SSL_REJECT_UNAUTHORIZED || "").replace(/['"]/g, "").trim();
+  const rejectUnauthorized = rejectAuthRaw !== "false";
+  
   const sslConfig = isProduction ? {
     rejectUnauthorized,
-    ca: process.env.DB_SSL_CA ? process.env.DB_SSL_CA.replace(/\\n/g, '\n') : undefined,
+    ca: process.env.DB_SSL_CA ? process.env.DB_SSL_CA.replace(/\\n/g, '\n').replace(/^["']|["']$/g, "") : undefined,
   } : undefined;
 
-  if (process.env.DATABASE_URL) {
+  const rawUrl = process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/^["']|["']$/g, "").trim() : "";
+
+  if (rawUrl) {
     try {
-      const url = new URL(process.env.DATABASE_URL);
+      const url = new URL(rawUrl);
       const isSslRequired = url.searchParams.get("ssl-mode") === "REQUIRED" || isProduction;
       
       dbConfig = {
