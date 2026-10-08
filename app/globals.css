@@ -26,7 +26,7 @@ body {
 }
 
 ::selection {
-  background: rgba(23, 212, 255, 0.35);
+  background: rgba(212, 175, 55, 0.35);
 }
 
 .glass {
@@ -45,17 +45,17 @@ body {
 }
 
 .input {
-  @apply w-full rounded-lg border border-slate-200 bg-white/80 px-3 py-2 text-sm outline-none transition focus:border-cyan focus:ring-2 focus:ring-cyan/20 dark:border-white/10 dark:bg-white/10;
+  @apply w-full rounded-lg border border-slate-200 bg-white/80 px-3 py-2 text-sm outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20 dark:border-white/10 dark:bg-white/10;
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-cyan px-4 py-2 text-sm font-semibold text-ink shadow-glow transition hover:-translate-y-0.5 hover:bg-cyan/90;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-ink shadow-glow transition hover:-translate-y-0.5 hover:bg-gold/90;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-cyan/50 hover:text-navy dark:border-white/10 dark:bg-white/10 dark:text-slate-100;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-gold/50 hover:text-navy dark:border-white/10 dark:bg-white/10 dark:text-slate-100;
 }
 
 .icon-btn {
-  @apply inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white/70 text-slate-700 transition hover:-translate-y-0.5 hover:border-cyan/50 dark:border-white/10 dark:bg-white/10 dark:text-slate-100;
+  @apply inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white/70 text-slate-700 transition hover:-translate-y-0.5 hover:border-gold/50 dark:border-white/10 dark:bg-white/10 dark:text-slate-100;
 }

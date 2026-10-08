@@ -14,12 +14,12 @@ const cards = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(23,212,255,.20),transparent_34%),linear-gradient(135deg,#f7fbff,#eef5fb)] dark:bg-[radial-gradient(circle_at_top_left,rgba(23,212,255,.14),transparent_32%),linear-gradient(135deg,#030914,#07111f)]">
+    <main className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(212, 175, 55,.20),transparent_34%),linear-gradient(135deg,#f7fbff,#eef5fb)] dark:bg-[radial-gradient(circle_at_top_left,rgba(212, 175, 55,.14),transparent_32%),linear-gradient(135deg,#030914,#07111f)]">
       <Nav />
       <section className="engineering-grid bg-grid relative mx-auto flex min-h-[calc(100vh-68px)] max-w-4xl flex-col items-center justify-center gap-10 px-4 py-14 text-center">
-        <div className="absolute right-8 top-16 hidden h-44 w-44 rounded-full border border-cyan/20 lg:block" />
+        <div className="absolute right-8 top-16 hidden h-44 w-44 rounded-full border border-gold/20 lg:block" />
         <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="flex flex-col items-center">
-          <p className="mb-4 inline-flex rounded-full border border-cyan/30 bg-cyan/10 px-4 py-2 text-sm font-semibold text-navy dark:text-cyan">
+          <p className="mb-4 inline-flex rounded-full border border-gold/30 bg-gold/10 px-4 py-2 text-sm font-semibold text-navy dark:text-gold">
             A Mechanical Association Initiative
           </p>
           <h1 className="font-display text-5xl font-black leading-tight text-navy dark:text-white md:text-7xl">
@@ -38,8 +38,8 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-3">
           {cards.map((card, index) => (
             <motion.div key={card.title} whileHover={{ y: -6 }} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }}>
-            <Link href={card.href} className="glass block h-full rounded-xl p-6 shadow-panel transition hover:border-cyan/50">
-              <card.icon className="mb-4 text-cyan" size={30} />
+            <Link href={card.href} className="glass block h-full rounded-xl p-6 shadow-panel transition hover:border-gold/50">
+              <card.icon className="mb-4 text-gold" size={30} />
               <h3 className="font-display text-xl font-bold">{card.title}</h3>
               <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{card.text}</p>
             </Link>

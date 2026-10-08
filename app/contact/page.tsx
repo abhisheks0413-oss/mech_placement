@@ -36,10 +36,10 @@ export default function ContactPage() {
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {contacts.map((person) => (
             <article key={person.title + person.name} className="glass rounded-xl p-5 shadow-panel">
-              <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-cyan/15 text-cyan">
+              <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-gold/15 text-gold">
                 <UserRound size={28} />
               </div>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-cyan">{person.title}</p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-gold">{person.title}</p>
               <h2 className="mt-2 font-display text-2xl font-bold">{person.name}</h2>
               <p className="mt-1 text-sm text-slate-500">{person.className}</p>
               <div className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">

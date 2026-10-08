@@ -25,11 +25,11 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(23,212,255,.18),transparent_32%),linear-gradient(135deg,#f7fbff,#eef5fb)] dark:bg-[radial-gradient(circle_at_top,rgba(23,212,255,.12),transparent_32%),linear-gradient(135deg,#030914,#07111f)]">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(212, 175, 55,.18),transparent_32%),linear-gradient(135deg,#f7fbff,#eef5fb)] dark:bg-[radial-gradient(circle_at_top,rgba(212, 175, 55,.12),transparent_32%),linear-gradient(135deg,#030914,#07111f)]">
       <Nav />
       <section className="mx-auto flex max-w-7xl items-center justify-center px-4 py-16">
         <form onSubmit={submit} className="glass w-full max-w-md rounded-xl p-7 shadow-panel">
-          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-navy text-cyan"><Lock /></div>
+          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-navy text-gold"><Lock /></div>
           <h1 className="font-display text-3xl font-black text-navy dark:text-white">Admin Login</h1>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Secure access for Mechanical Association placement coordinators.</p>
           <div className="mt-6 space-y-4">
@@ -37,7 +37,7 @@ export default function LoginPage() {
             <input className="input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" type="password" required />
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> Remember Login</label>
             <button disabled={loading} className="btn-primary w-full"><LogIn size={18} /> {loading ? "Signing in..." : "Login"}</button>
-            <Link className="block text-center text-sm text-cyan" href="/">Back to portal</Link>
+            <Link className="block text-center text-sm text-gold" href="/">Back to portal</Link>
           </div>
         </form>
       </section>

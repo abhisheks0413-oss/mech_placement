@@ -54,14 +54,14 @@ export function OpportunitiesView() {
               <div className="flex items-start gap-3">
                 <Logo src={item.logo} company={item.company} />
                 <div className="min-w-0 flex-1">
-                  <span className="rounded-full bg-cyan/15 px-3 py-1 text-xs font-bold text-navy dark:text-cyan">{item.type}</span>
+                  <span className="rounded-full bg-gold/15 px-3 py-1 text-xs font-bold text-navy dark:text-gold">{item.type}</span>
                   <h3 className="mt-3 truncate font-display text-xl font-bold">{item.company}</h3>
                 </div>
               </div>
               <p className="mt-3 h-20 overflow-hidden text-sm leading-6 text-slate-600 dark:text-slate-400">{item.description}</p>
               <Compensation item={item} />
               <div className="mt-auto pt-4">
-              <p className="flex items-start gap-2 rounded-lg bg-white/60 p-3 text-sm text-slate-600 dark:bg-white/5 dark:text-slate-300"><CalendarClock className="mt-0.5 shrink-0 text-cyan" size={16} /> <span><span className="block text-xs font-semibold uppercase text-slate-400">Application closes</span>{formatDateTime(item.deadline)}</span></p>
+              <p className="flex items-start gap-2 rounded-lg bg-white/60 p-3 text-sm text-slate-600 dark:bg-white/5 dark:text-slate-300"><CalendarClock className="mt-0.5 shrink-0 text-gold" size={16} /> <span><span className="block text-xs font-semibold uppercase text-slate-400">Application closes</span>{formatDateTime(item.deadline)}</span></p>
               <button className="btn-primary mt-5 w-full" disabled={item.status === "Applications Closed"} onClick={() => setSelected(item)}>
                 {item.status === "Applications Closed" ? "Applications Closed" : "View Details"}
               </button>
@@ -81,14 +81,14 @@ export function OpportunitiesView() {
           <div className="space-y-2">
             <p className="font-semibold">Application Links</p>
             {selected.applicationLinks?.length ? selected.applicationLinks.map((link) => (
-              <a key={`${link.name}-${link.url}`} className="flex items-center gap-2 text-cyan" href={link.url} target="_blank">
+              <a key={`${link.name}-${link.url}`} className="flex items-center gap-2 text-gold" href={link.url} target="_blank">
                 <ExternalLink size={16} /> {link.name}
               </a>
             )) : <a className="btn-primary" href={selected.applicationLink} target="_blank">Application Link <ExternalLink size={16} /></a>}
           </div>
           <div><p className="font-semibold">Application Deadline</p><p>{formatDateTime(selected.deadline)}</p></div>
           <div><p className="font-semibold">Date Posted</p><p>{formatDateOnly(selected.createdAt)}</p></div>
-          <div className="space-y-2"><p className="font-semibold">Attached Documents</p>{selected.documents.length ? selected.documents.map((doc) => <a key={`${doc.name}-${doc.url}`} className="flex items-center gap-2 text-cyan" href={doc.url} target="_blank"><FileText size={16} /> {doc.name}</a>) : <p>No documents attached.</p>}</div>
+          <div className="space-y-2"><p className="font-semibold">Attached Documents</p>{selected.documents.length ? selected.documents.map((doc) => <a key={`${doc.name}-${doc.url}`} className="flex items-center gap-2 text-gold" href={doc.url} target="_blank"><FileText size={16} /> {doc.name}</a>) : <p>No documents attached.</p>}</div>
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/5">
             <p className="mb-3 flex items-center gap-2 font-semibold"><MessageSquareText size={17} /> Admin Updates</p>
             {updates.length ? updates.map((update) => <div key={update.id} className="border-t border-slate-200 py-3 first:border-t-0 dark:border-white/10"><p className="leading-6">{update.message}</p><p className="mt-1 text-xs text-slate-500">{formatDateTime(update.createdAt)}</p></div>) : <p className="text-slate-500">No updates have been posted yet.</p>}
@@ -110,7 +110,7 @@ export function StatisticsView() {
   const priced = filtered.filter((item) => item.package !== null && Number.isFinite(Number(item.package)));
   const highest = priced.length ? Math.max(...priced.map((item) => Number(item.package))) : null;
   const avg = priced.length ? priced.reduce((sum, item) => sum + Number(item.package), 0) / priced.length : null;
-  const chartData = { labels: priced.map((item) => item.company), datasets: [{ label: "Package (LPA)", data: priced.map((item) => Number(item.package)), backgroundColor: "rgba(23,212,255,.72)", borderRadius: 8 }] };
+  const chartData = { labels: priced.map((item) => item.company), datasets: [{ label: "Package (LPA)", data: priced.map((item) => Number(item.package)), backgroundColor: "rgba(212, 175, 55,.72)", borderRadius: 8 }] };
   return items.length === 0 ? <EmptyState title="No placement statistics available so far." text="Company package records and charts will be shown here." /> : (
     <div className="space-y-6">
       <Toolbar query={query} setQuery={setQuery} extra={<><select className="input" value={year} onChange={(e) => setYear(e.target.value)}><option>All</option>{years.map((item) => <option key={item}>{item}</option>)}</select><select className="input" value={sort} onChange={(e) => setSort(e.target.value)}><option value="desc">Package High to Low</option><option value="asc">Package Low to High</option></select></>} />
@@ -127,8 +127,8 @@ export function AlumniView() {
   useEffect(() => { load<AlumniInsight>("/api/alumni").then(setItems); }, []);
   return items.length === 0 ? <EmptyState title="No alumni insights available so far." text="Alumni placement stories will appear here once added." /> : (
     <>
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{items.map((item, index) => <motion.button key={item.id} className="glass rounded-xl p-5 text-left shadow-panel" onClick={() => setSelected(item)} whileHover={{ y: -5 }} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}><div className="flex items-center gap-4"><div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-cyan/15 text-cyan"><UserRound /></div><div><h3 className="font-display text-lg font-bold">{item.name}</h3><p className="text-sm text-slate-500">{item.position}</p></div></div><p className="mt-4 text-sm font-semibold">{item.company} - Passout {item.passoutYear}</p><p className="mt-1 text-sm text-cyan">CTC obtained: {formatCtc(item.ctc)}</p><p className="mt-1 text-xs text-slate-500">{item.placementMode || "On Campus"}</p><p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{item.review}</p></motion.button>)}</div>
-      <Modal open={!!selected} onClose={() => setSelected(null)} title={selected?.name || "Alumni Insight"}>{selected && <div className="space-y-3"><p className="text-sm font-semibold text-cyan">{selected.position} at {selected.company} - Passout {selected.passoutYear} - CTC {formatCtc(selected.ctc)}</p><p className="text-sm text-slate-500">CTC may be shown as Data Not Available when blank or zero.</p><p className="leading-7 text-slate-700 dark:text-slate-300">{selected.review}</p></div>}</Modal>
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{items.map((item, index) => <motion.button key={item.id} className="glass rounded-xl p-5 text-left shadow-panel" onClick={() => setSelected(item)} whileHover={{ y: -5 }} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}><div className="flex items-center gap-4"><div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-gold/15 text-gold"><UserRound /></div><div><h3 className="font-display text-lg font-bold">{item.name}</h3><p className="text-sm text-slate-500">{item.position}</p></div></div><p className="mt-4 text-sm font-semibold">{item.company} - Passout {item.passoutYear}</p><p className="mt-1 text-sm text-gold">CTC obtained: {formatCtc(item.ctc)}</p><p className="mt-1 text-xs text-slate-500">{item.placementMode || "On Campus"}</p><p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{item.review}</p></motion.button>)}</div>
+      <Modal open={!!selected} onClose={() => setSelected(null)} title={selected?.name || "Alumni Insight"}>{selected && <div className="space-y-3"><p className="text-sm font-semibold text-gold">{selected.position} at {selected.company} - Passout {selected.passoutYear} - CTC {formatCtc(selected.ctc)}</p><p className="text-sm text-slate-500">CTC may be shown as Data Not Available when blank or zero.</p><p className="leading-7 text-slate-700 dark:text-slate-300">{selected.review}</p></div>}</Modal>
     </>
   );
 }
@@ -143,7 +143,7 @@ function Metric({ title, value, suffix = "" }: { title: string; value: number | 
 
 function Logo({ src, company, large = false }: { src?: string | null; company: string; large?: boolean }) {
   const size = large ? "h-16 w-16" : "h-12 w-12";
-  return <div className={`${size} flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white text-sm font-bold text-navy shadow-sm dark:border-white/10 dark:bg-white/10 dark:text-cyan`}>{src ? <img src={src} alt={`${company} logo`} className="h-full w-full object-cover" /> : company.slice(0, 2).toUpperCase()}</div>;
+  return <div className={`${size} flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white text-sm font-bold text-navy shadow-sm dark:border-white/10 dark:bg-white/10 dark:text-gold`}>{src ? <img src={src} alt={`${company} logo`} className="h-full w-full object-cover" /> : company.slice(0, 2).toUpperCase()}</div>;
 }
 
 function formatPackage(value: number | null) {

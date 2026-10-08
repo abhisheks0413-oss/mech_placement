@@ -64,7 +64,7 @@ export function AdminDashboard() {
               <button className="btn-secondary lg:hidden" onClick={logout}><LogOut size={17} /> Logout</button>
             </div>
           </div>
-          <div className="mb-8 grid gap-4 md:grid-cols-3">{cards.map((card) => <div key={card.label} className="glass rounded-xl p-5 shadow-panel"><card.icon className="text-cyan" /><p className="mt-4 text-sm text-slate-500">{card.label}</p><p className="font-display text-3xl font-bold"><Counter value={card.value} /></p></div>)}</div>
+          <div className="mb-8 grid gap-4 md:grid-cols-3">{cards.map((card) => <div key={card.label} className="glass rounded-xl p-5 shadow-panel"><card.icon className="text-gold" /><p className="mt-4 text-sm text-slate-500">{card.label}</p><p className="font-display text-3xl font-bold"><Counter value={card.value} /></p></div>)}</div>
           <div className="mb-4 flex flex-wrap gap-2 lg:hidden"><button className="btn-secondary" onClick={() => setSection("opportunities")}>Opportunities</button><button className="btn-secondary" onClick={() => setSection("statistics")}>Statistics</button><button className="btn-secondary" onClick={() => setSection("alumni")}>Alumni</button></div>
           <CrudPanel section={section} opportunities={opportunities} statistics={statistics} alumni={alumni} onAdd={() => { setEditing(null); setModal(section); }} onEdit={(item: AdminRow) => { setEditing(item); setModal(section); }} onDelete={async (id: number) => { if (!confirm("Delete this record?")) return; await remove(section, id); toast.success("Deleted"); refresh(); }} />
         </section>
@@ -79,7 +79,7 @@ export function AdminDashboard() {
 }
 
 function SideButton({ active, onClick, icon: Icon, label }: { active: boolean; onClick: () => void; icon: any; label: string }) {
-  return <button onClick={onClick} className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-semibold transition ${active ? "bg-cyan/15 text-navy dark:text-cyan" : "hover:bg-slate-100 dark:hover:bg-white/10"}`}><Icon size={18} /> {label}</button>;
+  return <button onClick={onClick} className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-semibold transition ${active ? "bg-gold/15 text-navy dark:text-gold" : "hover:bg-slate-100 dark:hover:bg-white/10"}`}><Icon size={18} /> {label}</button>;
 }
 
 function CrudPanel({ section, opportunities, statistics, alumni, onAdd, onEdit, onDelete }: any) {
