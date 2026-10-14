@@ -13,7 +13,10 @@ export const opportunitySchema = z.object({
   deadline: z.string().min(4),
   compensation: z.array(z.object({
     label: z.string().min(1),
-    amount: z.coerce.number().nonnegative()
+    amount: z.preprocess(
+      (v) => v === "" || v === null || v === undefined ? null : v,
+      z.coerce.number().nonnegative().nullable()
+    )
   })).default([]),
   documents: z.array(z.object({
     name: z.string().min(1),

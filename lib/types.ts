@@ -1,4 +1,4 @@
-﻿export type OpportunityType = "Internship" | "Placement";
+export type OpportunityType = "Internship" | "Placement";
 
 export type Opportunity = {
   id: number;
@@ -28,7 +28,7 @@ export type NamedDocument = {
 
 export type CompensationOffer = {
   label: string;
-  amount: number;
+  amount: number | null;
 };
 
 export type OpportunityStatus = "Applications Open" | "Applications Closed";

@@ -143,7 +143,16 @@ function Metric({ title, value, suffix = "" }: { title: string; value: number | 
 
 function Logo({ src, company, large = false }: { src?: string | null; company: string; large?: boolean }) {
   const size = large ? "h-16 w-16" : "h-12 w-12";
-  return <div className={`${size} flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white text-sm font-bold text-navy shadow-sm dark:border-white/10 dark:bg-white/10 dark:text-gold`}>{src ? <img src={src} alt={`${company} logo`} className="h-full w-full object-cover" /> : company.slice(0, 2).toUpperCase()}</div>;
+  const [imgError, setImgError] = useState(false);
+  const showImg = src && !imgError;
+  return (
+    <div className={`${size} flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white text-sm font-bold text-navy shadow-sm dark:border-white/10 dark:bg-white/10 dark:text-gold`}>
+      {showImg
+        ? <img src={src} alt={`${company} logo`} className="h-full w-full object-contain" onError={() => setImgError(true)} />
+        : company.slice(0, 2).toUpperCase()
+      }
+    </div>
+  );
 }
 
 function formatPackage(value: number | null) {
@@ -158,7 +167,27 @@ function Compensation({ item, detailed = false }: { item: Opportunity; detailed?
   const label = item.type === "Internship" ? "Stipend" : "Expected CTC";
   if (!item.compensation?.length) return null;
   const offers = item.type === "Internship" ? item.compensation.slice(0, 1) : item.compensation;
-  return <div className={`mt-4 ${detailed ? "space-y-2" : "flex flex-wrap gap-2"}`}>{detailed && <p className="font-semibold">{label}</p>}{offers.map((offer, index) => <span key={`${offer.label}-${index}`} className="inline-flex items-center gap-1 rounded-full bg-navy px-3 py-1 text-xs font-semibold text-white"><IndianRupee size={13} /> {item.type === "Internship" ? `${offer.amount}/month` : `${offer.label}: ${offer.amount} LPA · ${slabFor(offer.amount)}`}</span>)}</div>;
+  // If the only offer has a null amount, show a single "Not Disclosed" chip
+  const allNull = offers.every((offer) => offer.amount === null || offer.amount === undefined);
+  return (
+    <div className={`mt-4 ${detailed ? "space-y-2" : "flex flex-wrap gap-2"}`}>
+      {detailed && <p className="font-semibold">{label}</p>}
+      {allNull ? (
+        <span className="inline-flex items-center gap-1 rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-slate-300">
+          Not Disclosed
+        </span>
+      ) : (
+        offers.map((offer, index) => (
+          <span key={`${offer.label}-${index}`} className="inline-flex items-center gap-1 rounded-full bg-navy px-3 py-1 text-xs font-semibold text-white">
+            <IndianRupee size={13} />
+            {item.type === "Internship"
+              ? (offer.amount !== null && offer.amount !== undefined ? `${offer.amount}/month` : "Not Disclosed")
+              : `${offer.label}: ${offer.amount} LPA · ${slabFor(offer.amount as number)}`}
+          </span>
+        ))
+      )}
+    </div>
+  );
 }
 
 function slabFor(ctc: number) {

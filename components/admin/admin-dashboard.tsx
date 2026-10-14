@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -198,7 +198,7 @@ function OpportunityForm({ initial, onDone }: any) {
       {form.type === "Internship" ? (
         <div className="rounded-xl border border-slate-200 p-3 dark:border-white/10">
           <p className="mb-3 text-sm font-semibold">Stipend</p>
-          <Field label="Monthly Stipend" type="number" value={form.stipend} onChange={(value) => setForm({ ...form, stipend: value })} min="0" />
+          <Field label="Monthly Stipend (leave blank if not disclosed)" type="number" value={form.stipend} onChange={(value) => setForm({ ...form, stipend: value })} min="0" required={false} />
         </div>
       ) : (
         <div className="rounded-xl border border-slate-200 p-3 dark:border-white/10">
@@ -246,7 +246,16 @@ function OpportunityForm({ initial, onDone }: any) {
         <Upload size={16} /> Upload Logo
         <input hidden type="file" accept="image/*" onChange={(e) => upload(e.target.files, "logo")} />
       </label>
-      {form.logo && <p className="text-xs text-slate-500">Logo uploaded. It appears on public opportunity cards and detail headers.</p>}
+      {form.logo && (
+        <div className="flex items-center gap-3 rounded-xl border border-slate-200 p-3 dark:border-white/10">
+          <img src={form.logo} alt="Logo preview" className="h-14 w-14 rounded-lg border border-slate-200 object-contain bg-white p-1 dark:border-white/10" />
+          <div>
+            <p className="text-sm font-medium">Logo uploaded ✓</p>
+            <p className="text-xs text-slate-500">Visible on public opportunity cards and detail headers.</p>
+            <button type="button" className="mt-1 text-xs text-red-500 hover:underline" onClick={() => setForm((current: any) => ({ ...current, logo: "" }))}>Remove logo</button>
+          </div>
+        </div>
+      )}
 
       {id && (
         <div className="rounded-xl border border-slate-200 p-3 dark:border-white/10">
@@ -423,9 +432,18 @@ function splitDateTime(value: string) {
 
 function prepareOpportunityPayload(form: any) {
   const applicationLinks = (form.applicationLinks || []).filter((link: any) => link.name?.trim() && link.url?.trim());
-  const deadline = form.deadlineDate && form.deadlineTime ? `${form.deadlineDate}T${form.deadlineTime}` : form.deadline;
+  // Convert local date+time to a UTC ISO string to avoid timezone shift artifacts
+  let deadline = form.deadline;
+  if (form.deadlineDate && form.deadlineTime) {
+    const localMs = new Date(`${form.deadlineDate}T${form.deadlineTime}:00`).getTime();
+    deadline = Number.isFinite(localMs) ? new Date(localMs).toISOString() : form.deadline;
+  }
+  // Allow blank stipend — send null so the UI can show "Not Disclosed"
+  const stipendAmount = form.stipend === "" || form.stipend === null || form.stipend === undefined
+    ? null
+    : Number(form.stipend);
   const compensation = form.type === "Internship"
-    ? [{ label: "Stipend", amount: Number(form.stipend || 0) }]
+    ? [{ label: "Stipend", amount: stipendAmount }]
     : form.compensation;
   return {
     ...form,
