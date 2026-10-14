@@ -9,7 +9,7 @@ import { useTheme } from "@/components/theme-provider";
 const links = [
   ["Home", "/"],
   ["Opportunities", "/opportunities"],
-  ["Placement Statistics", "/statistics"],
+  // ["Placement Statistics", "/statistics"], // Hidden – under maintenance
   ["Alumni Insights", "/alumni"],
   ["Contact Us", "/contact"],
   ["Admin Login", "/admin/login"]

@@ -8,7 +8,7 @@ import { Nav } from "@/components/ui/nav";
 
 const cards = [
   { icon: BriefcaseBusiness, title: "Opportunities", href: "/opportunities", text: "Internship and placement openings curated by the department." },
-  { icon: BarChart3, title: "Package Records", href: "/statistics", text: "Company-wise package history, analytics, and year filters." },
+  // { icon: BarChart3, title: "Package Records", href: "/statistics", text: "Company-wise package history, analytics, and year filters." }, // Hidden – under maintenance
   { icon: Users, title: "Alumni Insights", href: "/alumni", text: "Placement preparation notes and role stories from CET Mechanical alumni." }
 ];
 
